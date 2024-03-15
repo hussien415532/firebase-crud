@@ -11,6 +11,7 @@ import { formData } from './Model/form-data';
 export class AppComponent {
 
   constructor(private api: HttpService) { }
+  selected:any
   editMode: boolean = false;
   data: formData[] = [];
   myForm = new FormGroup({
@@ -22,11 +23,15 @@ export class AppComponent {
     this.getAll();
   }
   submit() {
-
-    this.api.addData(this.myForm.value).subscribe((_) => {
-      this.getAll();
-    });
-    this.myForm.reset();
+    if (this.editMode) {
+      this.updateData(this.selected.id, this.myForm.value);
+    }
+    else {
+      this.api.addData(this.myForm.value).subscribe((_) => {
+        this.getAll();
+      });
+      this.myForm.reset();
+    }
 
 
   }
@@ -38,16 +43,14 @@ export class AppComponent {
   deleteTask(id: string | undefined) {
     this.api.deleteData(id).subscribe(_ => this.getAll())
   }
-  edit(name: string, age: any) {
+  edit(id:any) {
     this.editMode = true;
-    this.myForm.setValue({
-      name: name,
-      age: age
-    })
+    this.selected=this.data.find(task=>{return task.id===id});
+    this.myForm.setValue(this.selected);
   }
   updateData(id: string | undefined, data: any) {
     this.api.updateData(id, data).subscribe(_ => this.getAll());
-    this.editMode=false;
+    this.editMode = false;
     this.myForm.reset();
   }
 

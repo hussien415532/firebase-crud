@@ -1,5 +1,5 @@
 export interface formData {
   name:string;
-  age:number;
+  age:any;
   id?:string;
 }

@@ -5,16 +5,17 @@
   <label for="name">age</label>
   <input type="number" name="age" formControlName="age">
   <br>
-  <button type="submit" [disabled]="myForm.invalid || editMode" *ngIf="!editMode">Add</button>
+  <button type="submit" [disabled]="myForm.invalid" >{{editMode?'Edit':'Add'}}</button>
+
 </form>
 <br>
 <br><br>
 <div *ngFor="let i of data" class="data">
   <div>
     {{i.name}} - {{i.age}}
-    <button (click)="edit(i.name,i.age)" *ngIf="!editMode">edit</button>
+    <button (click)="edit(i.id)" *ngIf="!editMode">edit</button>
     <button (click)="deleteTask(i.id)" *ngIf="!editMode">Delete</button>
-    <button (click)="updateData(i.id,myForm.value)" *ngIf="editMode&&(i.name == myForm.value.name)">Submit</button>
+
   </div>
 
 </div>
