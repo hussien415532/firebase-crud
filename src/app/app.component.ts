@@ -16,6 +16,7 @@ export class AppComponent {
   myForm = new FormGroup({
     name: new FormControl('', Validators.required),
     age: new FormControl('', Validators.required),
+
   });
   ngOnInit() {
     this.getAll();
