@@ -11,8 +11,9 @@ import { formData } from './Model/form-data';
 export class AppComponent {
 
   constructor(private api: HttpService) { }
-  selected:any
+  selected: any
   editMode: boolean = false;
+  loading: boolean = true;
   data: formData[] = [];
   myForm = new FormGroup({
     name: new FormControl('', Validators.required),
@@ -36,17 +37,21 @@ export class AppComponent {
 
   }
   getAll() {
-    this.api.getAll().subscribe((d) => {
-      this.data = d;
+    this.api.getAll().subscribe({
+      next: (d) => {
+        this.data = d;
+      },error:(e)=>{
+        console.log('error')
+      }
     });
   }
   deleteTask(id: string | undefined) {
     this.api.deleteData(id).subscribe(_ => this.getAll())
   }
-  edit(id:any) {
+  edit(id: any) {
     this.editMode = true;
-    this.selected=this.data.find(task=>{return task.id===id});
-    this.myForm.setValue(this.selected);
+    this.selected = this.data.find(task => { return task.id === id });
+    this.myForm.patchValue(this.selected);
   }
   updateData(id: string | undefined, data: any) {
     this.api.updateData(id, data).subscribe(_ => this.getAll());
